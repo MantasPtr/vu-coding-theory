@@ -1,5 +1,5 @@
 import unittest
-from src import byteConverter as bc
+from src import byte_converter as bc
 
 class TestByteConverter(unittest.TestCase):
 
