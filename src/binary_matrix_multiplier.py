@@ -1,6 +1,6 @@
 from src.exceptions import InvalidArgumentError
 
-def multiply(vector, matrix):
+def multiply(vector: [int], matrix:[[int]]):
     if not vector:
         raise InvalidArgumentError("vector must me not empty list")
     if not matrix:
