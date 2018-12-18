@@ -1,17 +1,22 @@
 import unittest
-from src import parity_check_matrix as sm
+from src import parity_check_matrix as pcm
 
 class TestParityMatrixGeneration(unittest.TestCase):
-     
-    def test_dimensions_12(self):
-        rez = sm.generate([[1,0]])
-    #     self.assertEqual(len(rez), 2)
-    #     self.assertEqual(len(rez[0]), 1)
 
-    # def test_dimensions_32(self):
-    #     rez = pcm.generate([[1,0],[1,0],[1,0]])
-    #     self.assertEqual(len(rez), 2)
-    #     self.assertEqual(len(rez[0]), 3) 
+    def test_parity_1x2(self):
+        gen_matrix = [[1,0]]
+        parity_check_matrix = [[0,1]]
+        self.assertEqual(pcm.generate(gen_matrix), parity_check_matrix)
+
+    def test_parity_3x5(self):
+        gen_matrix = [[1,0,1,0,1],[0,1,1,1,0]]
+        parity_check_matrix = [[1,1,1,0,0],[0,1,0,1,0],[1,0,0,0,1]]
+        self.assertEqual(pcm.generate(gen_matrix), parity_check_matrix)
+
+    def test_parity_1x3(self):
+        gen_matrix = [[1,1,1]]
+        parity_check_matrix = [[1,1,0],[1,0,1]]
+        self.assertEqual(pcm.generate(gen_matrix), parity_check_matrix)
 
 if __name__ == '__main__':
     unittest.main()
