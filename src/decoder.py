@@ -12,41 +12,39 @@ class Decoder:
         self.gen_matrix = gen_matrix
         self.parity_check_matrix = generate_parity_check(gen_matrix)
         self.list_of_syndromes_coset_leaders_weights = generate_syndromes_coset_leaders_weights(self.parity_check_matrix)
-
+        
     def decode(self, message: [int], message_len: int):
-        decoded_vectors = [self._decode_vector(vector) for vector in split(message, len(self.gen_matrix[0]))]
-        return list(chain(*decoded_vectors))
+        decoded_vectors = [ self._decode_vector(vector) for vector in split(message, len(self.gen_matrix[0]))]
+        return list(chain(*decoded_vectors))[0:message_len]
 
     def _decode_vector(self, vector: [int]):
         t_vector = deepcopy(vector)
-        decoded, weight = self._find_vector_and_coset_leader_weight(t_vector)
+        weight = self._calculate_coset_leader_weight(t_vector)
         if weight == 0:
-            return decoded
+            return t_vector[0:len(self.gen_matrix)]
         else:
-            return self._search_for_decode_vector(0,t_vector,weight)
+            return self._search_for_decode_vector(0, t_vector, weight)
 
     def _search_for_decode_vector(self, idx, vector, lowest_weight):
         if idx >= len(vector):
             raise InvalidStateError(f"could not decode vector:{vector}")
-
+        
         vector[idx] ^= 1 
-        decoded, weight = self._find_vector_and_coset_leader_weight(vector)
+        weight = self._calculate_coset_leader_weight(vector)
         if weight == 0:
-            return decoded
+            return vector[0 : len(self.gen_matrix)]
         if weight < lowest_weight:
-            return self._search_for_decode_vector(idx+1, vector, weight)
+            return self._search_for_decode_vector(idx + 1, vector, weight)
         else:
             vector[idx] ^= 1
-            return self._search_for_decode_vector(idx+1, vector, lowest_weight)
+            return self._search_for_decode_vector(idx + 1, vector, lowest_weight)
 
-
-    def _find_vector_and_coset_leader_weight(self, vector):
+    def _calculate_coset_leader_weight(self, vector):
         decoded = multiplyByVector(self.parity_check_matrix,vector)
-        weight = self._find_coset_leader_weight(decoded)
-        return decoded, weight
+        weight = self._find_coset_leader_weight_by_syndrome(decoded)
+        return weight
 
-
-    def _find_coset_leader_weight(self, syndrome):
-        for pair in self.list_of_syndromes_coset_leaders_weights:
-            if pair[0] == syndrome:
-                return pair[1]
+    def _find_coset_leader_weight_by_syndrome(self, syndrome):
+        for (s, w) in self.list_of_syndromes_coset_leaders_weights:
+            if s == syndrome:
+                return w
