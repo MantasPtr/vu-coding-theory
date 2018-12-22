@@ -1,12 +1,13 @@
 import random
 
-def generate(k, n):
+def generate(row_count, col_count):
+    
     gen = random.Random()
-    matrix = generate_0_matrix(k,n)
-    for v in range(k):
+    matrix = generate_0_matrix(row_count, col_count)
+    for v in range(row_count):
         matrix[v][v] = 1
-    for row in range(k):
-        for col in range(k,n):
+    for row in range(row_count):
+        for col in range(row_count, col_count):
             random_chance = gen.random()
             if (random_chance > 0.5):
                 matrix[row][col] = 1

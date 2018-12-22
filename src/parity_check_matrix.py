@@ -8,7 +8,7 @@ def generate(gen_matrix: [[int]]):
     _transpose_end_into_begining(gen_matrix, parity_matrix, k, n )
     _fill_end_with_standart_matrix(parity_matrix, row_from = k, row_to = n)
     if (parity_matrix == []):
-        raise InvalidStateError("could not generate parity matrix (probably gen matrix is square)")
+        raise InvalidStateError(f"Could not generate parity matrix. Gen matrix = {gen_matrix}")
     return parity_matrix
 
 def _transpose_end_into_begining(gen_matrix, parity_matrix, k, n):

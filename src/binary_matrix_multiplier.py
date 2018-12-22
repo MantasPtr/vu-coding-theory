@@ -5,8 +5,6 @@ def multiplyByMatrix(vector: [int], matrix:[[int]]):
     _validate(matrix, vector)
     if len(vector) != len (matrix):
         raise InvalidArgumentError(f"cannot multiply vector which length is {len(vector)} by matrix that has a {len(matrix)} rows")
-    
-
     result = [0 for _ in range(len(matrix[0]))] # initialize empty array
     for matrix_column_idx, _  in enumerate(matrix[0]):
         for matrix_row_idx, v_value in enumerate(vector):
