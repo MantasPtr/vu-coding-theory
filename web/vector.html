@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Vector{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<!-- Error section -->
+<div class="row">
+  Errors:
+</div>
+
+<!-- Top section -->
+<div class="row">
+  <div class="col-md">
+    {{ input_with_placeholder( 'Vector:', 'vector', '101010') }}
+    {{ input_with_placeholder( 'Error probability:', 'error', '0.5') }}
+    </div>
+  <div class="col-md">
+    <div class="row">
+      <div class="col-md">
+        {{ input_with_placeholder( 'K:', 'k', '4') }}
+      </div>
+      <div class="col-md">
+        {{ input_with_placeholder( 'N:', 'n', '3') }}
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+      {{ input_with_button('Matrix:', 'matrix', '', 'Generate', 'onGenerate()' ) }}  
+    </div>  
+    </div>
+  </div>
+</div>
+
+<!-- Middle section -->
+<div class="row justify-content-md-center my-3">
+  <button type="button" class="btn btn-primary" onclick="onEncode()">Encode</button>
+</div>
+
+<div class="row">
+  <div class="col-md">
+
+    Encoded:
+    <span id="encoded-vector">Vector</span>
+  </div>
+  <div class="col-md">
+    {{ input_with_placeholder( 'Error vector:', 'error-vector', '') }}
+  </div>
+</div>
+
+<!-- Bottom section -->
+<div class="row justify-content-md-center my-3">
+  <button type="button" class="btn btn-primary" onclick="onSend()">Send</button>
+</div>
+
+
+<div class="row">
+  <div class="col-md">
+    Received:
+    <span id="received-vector">Vector</span>
+  </div>
+  <div class="col-md">
+    Decoded:
+    <span id="decoded-vector">Vector</span>
+  </div>
+</div>
+
+{% endblock %}
+
+{% macro input_with_placeholder(title, id, placeholder) -%}
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="{{ id }}-input-addon">{{ title }}</span>
+  </div>
+  <input id="{{ id }}" type="text" class="form-control" placeholder="{{placeholder}}" aria-describedby="{{ id }}-input-addon">
+</div>
+{%- endmacro %}
+
+{% macro input_with_button(title, id, placeholder, buttonTitle ,onClick) -%}
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="{{ id }}-input-addon">{{ title }}</span>
+  </div>
+  <input id="{{ id }}" type="text" class="form-control" placeholder="{{placeholder}}" aria-describedby="{{ id }}-input-addon">
+  <div class="input-group-append">
+    <button class="btn btn-outline-success" type="button" id="{{ id }}-input-button" onclick="{{ onClick }}">{{ buttonTitle }}</button>
+  </div>
+</div>
+{%- endmacro %}

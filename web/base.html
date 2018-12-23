@@ -1,0 +1,28 @@
+<!doctype html>
+
+<head>
+  <title>{% block title %}{% endblock %} encoding</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+    crossorigin="anonymous">
+</head>
+
+<body class="container">
+  <nav>
+    <h1>Step by step decoding by <a href=https://github.com/MantasPtr>Mantas Petrikas</a> </h1> <ul class="navigation">
+        <li><a href="{{ url_for('vector') }}">Vector</a></li>
+        <li><a href="{{ url_for('text') }}">Text</a></li>
+        <li><a href="{{ url_for('image') }}">Image</a></li>
+        </ul>
+  </nav>
+  <section class="content">
+    <header>
+      {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </section>
+</body>
