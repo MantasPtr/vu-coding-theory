@@ -32,8 +32,8 @@ function findOrError(id){
 async function onGenerate(){
     console.log("onGenerate")
     body = {
-        "k": kInput.value,
-        "n": nInput.value
+        "k": kInput.value.trim(),
+        "n": nInput.value.trim(),
     }
     json = await doPost("/vector/gen-matrix/", body)
     if (json) {
@@ -42,15 +42,50 @@ async function onGenerate(){
 }
 
 async function onEncode(){
-    if (!matrixInput.value) {
-        await onGenerate()
-    }
     console.log("onEncode")
-
+    try {
+        if (!matrixInput.value) {
+            await onGenerate()
+        }   
+    } catch (message) {
+        return showError(message);
+    }
+    body = {
+        "vector": vectorInput.value.trim(),
+        "gen_matrix": matrixInput.value.trim(),
+        "error_chance": errorProbabilityInput.value.trim(),
+    }
+    json = await doPost("/vector/encode/", body)
+    if (json) {
+        encodedVectorSpan.textContent = json.encoded
+        encodedVectorSpan.value = json.encoded
+        errorVectorInput.value = json.error_vector
+    }
 }
 
-function onSend(){
+async function onSend(){
     console.log("onSend")
+    try {
+        if (!matrixInput.value) {
+            await onGenerate()
+        }
+        if (!encodedVectorSpan.value) {
+            await onEncode()
+        }
+    } catch (message) {
+        return showError(message);
+    }
+    body = {
+        "gen_matrix": matrixInput.value.trim(),
+        "encoded_vector": encodedVectorSpan.textContent.trim(),
+        "error_vector": errorVectorInput.value.trim(),
+        "message_len": vectorInput.value.trim().length,
+    }
+    json = await doPost("/vector/send/", body)
+    if (json) {
+        receivedVectorSpan.textContent = json.received
+        decodedVectorSpan.textContent = json.decoded
+    }
 }
 
 async function doPost(url, bodyObj){
@@ -64,9 +99,9 @@ async function doPost(url, bodyObj){
         else {
             return await resp.json();
         }
-    }
-    catch (message) {
-        return showError(message);
+    } catch (message) {
+        showError(message);
+        throw message
     }
 
 }

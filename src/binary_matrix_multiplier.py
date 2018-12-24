@@ -29,7 +29,7 @@ def _validate(matrix:[[int]], vector: [int]):
         raise InvalidArgumentError("vector must me not empty list")
     if not matrix:
         raise InvalidArgumentError("matrix must me not empty list")
-    if not all(isinstance(row,list) for row in matrix):
+    if not all(isinstance(row, list) for row in matrix):
         raise InvalidArgumentError(f"not all matrix rows are lists")
     if not all(len(row)==len(matrix[0]) for row in matrix):
         raise InvalidArgumentError(f"not all matrix rows are equal length")

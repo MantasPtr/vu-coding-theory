@@ -2,7 +2,7 @@ import random
 import copy
 
 class Channel:
-    def __init__(self, error_chance, seed = None):
+    def __init__(self, error_chance = None, seed = None):
         self.random_gen = random.Random(seed)
         self.error_chance = error_chance
 

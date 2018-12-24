@@ -18,6 +18,17 @@ def vector_gen_matrix():
    gen_matrix_str = wc.handle_generate_matrix(body)
    return jsonify({"matrix": gen_matrix_str})
 
+@app.route('/vector/encode/', methods = ["POST"])
+def vector_encode():
+   body = request.get_json()
+   encoded, error_vector, error_count = wc.handle_encode(body)
+   return jsonify({"encoded": encoded, "error_vector": error_vector, "error_count": error_count})
+
+@app.route('/vector/send/', methods = ["POST"])
+def vector_send():
+   body = request.get_json()
+   received, decoded = wc.handle_send(body)
+   return jsonify({"received": received, "decoded": decoded,})
 
 @app.route('/text')
 def text():
