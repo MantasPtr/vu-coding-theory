@@ -1,5 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
+import src.web_controller as wc 
+
 app = Flask(__name__, static_folder='web', template_folder='web')
+
 
 @app.route('/')
 def hello_world():
@@ -8,6 +11,13 @@ def hello_world():
 @app.route('/vector')
 def vector():
     return render_template('vector.html')
+
+@app.route('/vector/gen-matrix/', methods = ["POST"])
+def vector_gen_matrix():
+   body = request.get_json()
+   gen_matrix_str = wc.handle_generate_matrix(body)
+   return jsonify({"matrix": gen_matrix_str})
+
 
 @app.route('/text')
 def text():

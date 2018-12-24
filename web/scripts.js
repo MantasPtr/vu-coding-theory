@@ -1,4 +1,4 @@
-document.onload = findFields
+window.onload = findFields
 
 let vectorInput; 
 let errorProbabilityInput; 
@@ -25,15 +25,26 @@ function findFields(){
     decodedVectorSpan = $("decoded-vector")
 }
 
-function findOrError(id){
+function findOrError(id){   
     return document.getElementById(id) || console.warn(`count not find element by id ${id}`)
 }
 
-function onGenerate(){
+async function onGenerate(){
     console.log("onGenerate")
+    body = {
+        "k": kInput.value,
+        "n": nInput.value
+    }
+    json = await doPost("/vector/gen-matrix/", body)
+    if (json) {
+        matrixInput.value = json.matrix
+    }
 }
 
-function onEncode(){
+async function onEncode(){
+    if (!matrixInput.value) {
+        await onGenerate()
+    }
     console.log("onEncode")
 
 }
@@ -42,3 +53,24 @@ function onSend(){
     console.log("onSend")
 }
 
+async function doPost(url, bodyObj){
+    try {
+        const headers = new Headers();
+        headers.append("content-type", "application/json");
+        const resp = await fetch(url, { method: "POST", body: JSON.stringify(bodyObj), headers});
+        if (!resp.ok) {
+            showError(resp.statusText);
+        }
+        else {
+            return await resp.json();
+        }
+    }
+    catch (message) {
+        return showError(message);
+    }
+
+}
+
+function showError(message){
+    console.error(message)
+}
