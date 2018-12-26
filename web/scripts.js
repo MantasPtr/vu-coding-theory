@@ -11,6 +11,9 @@ let encodedVectorSpan;
 let receivedVectorSpan;
 let decodedVectorSpan;
 
+let errorBanner;
+let errorSpan;
+
 function onGenerateClick() { tryAsync(onGenerate)}
 function onEncodeClick() { tryAsync(onEncode)}
 function onSendClick() { tryAsync(onSend)}
@@ -27,6 +30,8 @@ function findFields(){
     encodedVectorSpan = $("encoded-vector")
     receivedVectorSpan = $("received-vector")
     decodedVectorSpan = $("decoded-vector")
+    errorBanner=$("error-banner")
+    errorSpan=$("error-message")
 }
 
 function findOrError(id){   
@@ -42,7 +47,6 @@ async function tryAsync(func){
 }
 
 async function onGenerate(){
-        console.log("onGenerate")
         body = {
             "k": kInput.value.trim(),
             "n": nInput.value.trim(),
@@ -74,7 +78,6 @@ async function onEncode(){
 }
 
 async function onSend(){
-    console.log("onSend")
     if (!matrixInput.value) {
         await onGenerate()
     }
@@ -110,7 +113,7 @@ async function handleWrongResponse(response){
     if (response.status == 417 && response.json) {
         const json = await response.json()
         if (json.error){
-            throw Error("Error. " + json.error)
+            throw Error(json.error)
         } else {
             throw Error("Known error happened on the server but it did not return any information")
         }
@@ -127,6 +130,11 @@ function handleException(exception){
     }
 } 
 
+function hideError(message){
+    errorBanner.classList.add("invisible")
+}
+
 function showError(message){
-    console.error(message)
+    errorBanner.classList.remove("invisible")
+    errorSpan.textContent = message
 }

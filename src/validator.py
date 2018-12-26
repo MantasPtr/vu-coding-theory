@@ -37,7 +37,7 @@ def validate_error_chance(error_chance: str):
     _validate_not_empty(error_chance, "Error chance value must be provided. Value must be between 0 and 1")
     if (error_chance is not float):
         try:
-            error_chance = int(error_chance)
+            error_chance = float(error_chance)
         except ValueError:
             raise ValidationError(f"Invalid error chance value. Cannot convert {error_chance} to number")           
     if not (0 <=  error_chance <= 1):
@@ -75,8 +75,8 @@ def validate_error_vector(error_vector_str: str, encoded_vector: [int]):
     if not _vector_consist_of_0_and_1(error_vector_str):
         raise ValidationError(f"Invalid error vector value - ({error_vector_str}). It must only contain values of 0 and 1")
     error_vector = parser.vector_to_list(error_vector_str)
-    if len(error_vector) != encoded_vector:
-        raise ValidationError(f"Invalid error vector value - ({error_vector}). It must be same lenght as encoded vector")
+    if len(error_vector) != len(encoded_vector):
+        raise ValidationError(f"Invalid error vector value - ({error_vector_str}). It must be same length as encoded vector")
     return error_vector
 
 def validate_that_matrix_is_standart(matrix: [[int]]):
