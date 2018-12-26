@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import src.web_controller as wc 
-
+from src.exceptions import ValidationError
 app = Flask(__name__, static_folder='web', template_folder='web')
 
 
@@ -37,6 +37,12 @@ def text():
 @app.route('/image')
 def image():
     return render_template('image.html')
+
+@app.errorhandler(ValidationError)
+def handle_invalid_usage(error: ValidationError):
+    response = jsonify({"error": error.message})
+    response.status_code = 417
+    return response
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)

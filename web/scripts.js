@@ -11,6 +11,10 @@ let encodedVectorSpan;
 let receivedVectorSpan;
 let decodedVectorSpan;
 
+function onGenerateClick() { tryAsync(onGenerate)}
+function onEncodeClick() { tryAsync(onEncode)}
+function onSendClick() { tryAsync(onSend)}
+
 function findFields(){
     const $ = findOrError
     vectorInput = $("vector")
@@ -29,27 +33,33 @@ function findOrError(id){
     return document.getElementById(id) || console.warn(`count not find element by id ${id}`)
 }
 
+async function tryAsync(func){
+    try {
+        await func()
+    } catch (exc) {
+        return handleException(exc);
+    }
+}
+
 async function onGenerate(){
-    console.log("onGenerate")
-    body = {
-        "k": kInput.value.trim(),
-        "n": nInput.value.trim(),
-    }
-    json = await doPost("/vector/gen-matrix/", body)
-    if (json) {
-        matrixInput.value = json.matrix
-    }
+        console.log("onGenerate")
+        body = {
+            "k": kInput.value.trim(),
+            "n": nInput.value.trim(),
+        }
+        json = await doPost("/vector/gen-matrix/", body)
+        if (json) {
+            matrixInput.value = json.matrix
+        }
 }
 
 async function onEncode(){
     console.log("onEncode")
-    try {
-        if (!matrixInput.value) {
-            await onGenerate()
-        }   
-    } catch (message) {
-        return showError(message);
+    if (!matrixInput.value) {
+        await onGenerate()
     }
+    
+    console.log("onAfterEncode")
     body = {
         "vector": vectorInput.value.trim(),
         "gen_matrix": matrixInput.value.trim(),
@@ -65,15 +75,11 @@ async function onEncode(){
 
 async function onSend(){
     console.log("onSend")
-    try {
-        if (!matrixInput.value) {
-            await onGenerate()
-        }
-        if (!encodedVectorSpan.value) {
-            await onEncode()
-        }
-    } catch (message) {
-        return showError(message);
+    if (!matrixInput.value) {
+        await onGenerate()
+    }
+    if (!encodedVectorSpan.value) {
+        await onEncode()
     }
     body = {
         "gen_matrix": matrixInput.value.trim(),
@@ -89,22 +95,37 @@ async function onSend(){
 }
 
 async function doPost(url, bodyObj){
-    try {
         const headers = new Headers();
         headers.append("content-type", "application/json");
         const resp = await fetch(url, { method: "POST", body: JSON.stringify(bodyObj), headers});
         if (!resp.ok) {
-            showError(resp.statusText);
+            await handleWrongResponse(resp)
         }
         else {
             return await resp.json();
         }
-    } catch (message) {
-        showError(message);
-        throw message
-    }
-
 }
+
+async function handleWrongResponse(response){
+    if (response.status == 417 && response.json) {
+        const json = await response.json()
+        if (json.error){
+            throw Error("Error. " + json.error)
+        } else {
+            throw Error("Known error happened on the server but it did not return any information")
+        }
+    } else {
+        throw Error("Unknown error. Info: " + response.statusText  )
+    }
+}
+
+function handleException(exception){
+    if (exception.message) {
+        showError(exception.message)
+    } else {
+        showError(exception)
+    }
+} 
 
 function showError(message){
     console.error(message)

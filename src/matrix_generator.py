@@ -4,7 +4,6 @@ def generate(row_count, col_count):
     
     gen = random.Random()
     matrix = generate_0_matrix(row_count, col_count)
-    print(row_count, col_count)
     for v in range(row_count):
         matrix[v][v] = 1
     for row in range(row_count):

@@ -27,7 +27,7 @@
     </div>
     <div class="row">
         <div class="col-md">
-      {{ input_with_button('Matrix:', 'matrix', '', 'Generate', 'onGenerate()' ) }}  
+      {{ input_with_button('Matrix:', 'matrix', '', 'Generate', 'onGenerateClick()' ) }}  
     </div>  
     </div>
   </div>
@@ -35,7 +35,7 @@
 
 <!-- Middle section -->
 <div class="row justify-content-md-center my-3">
-  <button type="button" class="btn btn-primary" onclick="onEncode()">Encode</button>
+  <button type="button" class="btn btn-primary" onclick="onEncodeClick()">Encode</button>
 </div>
 
 <div class="row">
@@ -51,7 +51,7 @@
 
 <!-- Bottom section -->
 <div class="row justify-content-md-center my-3">
-  <button type="button" class="btn btn-primary" onclick="onSend()">Send</button>
+  <button type="button" class="btn btn-primary" onclick="onSendClick()">Send</button>
 </div>
 
 

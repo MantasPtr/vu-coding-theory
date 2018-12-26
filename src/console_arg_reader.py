@@ -16,7 +16,7 @@ def parse_args(args):
     error_chance = args.e
     gen_matrix = _resolve_matrix(gen_matrix, k, n)
     msg = parser.vector_to_list(msgStr)
-    _validate_chance(error_chance)
+    _validate_error_chance(error_chance)
     return k, n, msg, gen_matrix, error_chance
 
 def _resolve_matrix(gen_matrix, k, n):
@@ -39,7 +39,7 @@ def _read_args():
     parser.add_argument('-e', metavar="0.XXX",  type=float, default=0.1, help='error chance (0-1)')
     return parser.parse_args()
 
-def _validate_chance(error_chance):
+def _validate_error_chance(error_chance):
      if not (0 <=  error_chance <= 1):
         raise InvalidArgumentError(f"invalid error chance")
    
