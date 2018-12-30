@@ -1,1 +1,1 @@
-web: python flask_app.py
+web: gunicorn -b 127.0.0.1:5000 flask_app:app
