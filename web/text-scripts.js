@@ -1,38 +1,34 @@
 window.onload = findFields
 
-let vectorInput; 
+let textInput; 
 let errorProbabilityInput; 
 let kInput; 
 let nInput; 
 let matrixInput; 
-let errorVectorInput;
 
-let encodedVectorSpan;
-let receivedVectorSpan;
-let decodedVectorSpan;
+let withoutEncodingSpan;
+let withEncodingSpan;
 
 let errorBanner;
 let errorSpan;
 
 function onGenerateClick() { tryAsync(onGenerate)}
-function onEncodeClick() { tryAsync(onEncode)}
 function onSendClick() { tryAsync(onSend)}
 
 function findFields(){
     const $ = findOrError
-    vectorInput = $("vector")
+    textInput = $("text")
     errorProbabilityInput = $("error") 
     kInput = $("k") 
     nInput = $("n") 
     matrixInput = $("matrix") 
-    errorVectorInput = $("error-vector")
-
-    encodedVectorSpan = $("encoded-vector")
-    receivedVectorSpan = $("received-vector")
-    decodedVectorSpan = $("decoded-vector")
+    
+    withoutEncodingSpan = $("received-without")
+    withEncodingSpan = $("received-with")
     
     errorBanner=$("error-banner")
     errorSpan=$("error-message")
+    
 }
 
 function findOrError(id){   
@@ -52,49 +48,26 @@ async function onGenerate(){
             "k": kInput.value.trim(),
             "n": nInput.value.trim(),
         }
-        json = await doPost("/vector/gen-matrix/", body)
+        json = await doPost("/common/gen-matrix/", body)
         if (json) {
             matrixInput.value = json.matrix
         }
 }
 
-async function onEncode(){
-    console.log("onEncode")
-    if (!matrixInput.value) {
-        await onGenerate()
-    }
-    
-    console.log("onAfterEncode")
-    body = {
-        "vector": vectorInput.value.trim(),
-        "gen_matrix": matrixInput.value.trim(),
-        "error_chance": errorProbabilityInput.value.trim(),
-    }
-    json = await doPost("/vector/encode/", body)
-    if (json) {
-        encodedVectorSpan.textContent = json.encoded
-        encodedVectorSpan.value = json.encoded
-        errorVectorInput.value = json.error_vector
-    }
-}
 
 async function onSend(){
     if (!matrixInput.value) {
         await onGenerate()
     }
-    if (!encodedVectorSpan.value) {
-        await onEncode()
-    }
     body = {
+        "text": textInput.value.trim(),
         "gen_matrix": matrixInput.value.trim(),
-        "encoded_vector": encodedVectorSpan.textContent.trim(),
-        "error_vector": errorVectorInput.value.trim(),
-        "message_len": vectorInput.value.trim().length,
+        "error_chance": errorProbabilityInput.value.trim(),
     }
-    json = await doPost("/vector/send/", body)
+    json = await doPost("/text/send/", body)
     if (json) {
-        receivedVectorSpan.textContent = json.received
-        decodedVectorSpan.textContent = json.decoded
+        withoutEncodingSpan.textContent = json.not_encoded
+        withEncodingSpan.textContent = json.encoded
     }
 }
 

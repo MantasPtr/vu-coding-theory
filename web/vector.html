@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
+{% block scripts %}
+  <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+{% endblock %}
 {% block header %}
-<h1>{% block title %}Vector{% endblock %}</h1>
+<h1>{% block title %}Vector encoding{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
