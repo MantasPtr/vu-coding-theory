@@ -8,14 +8,24 @@ from src import validator
 from src import binary_converter
 
 def handle_generate_matrix(params: dict) -> str:
+    """
+    Gets code dimension k and code length n
+    Returns matrix which has k rows and n columns
+    """
+
     k_str, n_str = _assure_params(params, ["k", "n"])
-    k, n = validator.validate_k_n(k_str,n_str)
+    k, n = validator.validate_k_n(k_str, n_str)
 
     gen_matrix = matrix_generator.generate(k, n)
     
     return parser.list_to_matrix(gen_matrix)
 
 def handle_vector_encode(params: dict) -> ():
+    """
+    Gets vector to encode, generating matrix and error probablity.
+    Returns encoded vector, error vector and error count 
+    """
+
     vector_str, gen_matrix_str, error_chance_str = _assure_params(
         params, ["vector","gen_matrix","error_chance"]
         )
@@ -33,12 +43,18 @@ def handle_vector_encode(params: dict) -> ():
     return encoded_str, error_vector_str, error_count
 
 def handle_vector_send(params: dict) -> ():
+    """
+    Gets encoded vector to send, error vector, generating matrix and how long was original vector.
+    Returns vector which was received after sending it by channel and decoded vector
+    """
+    
     gen_matrix_str, encoded_vector_str, error_vector_str, message_len_str = _assure_params(
         params, ["gen_matrix", "encoded_vector", "error_vector", "message_len"]
         )
     gen_matrix = validator.validate_gen_matrix(gen_matrix_str)
     encoded = validator.validate_vector(encoded_vector_str)
     error_vector = validator.validate_error_vector(error_vector_str, encoded)
+    
     message_len = int(message_len_str)
     channel = Channel()
     received = channel.add_errors(encoded, error_vector)
@@ -50,6 +66,11 @@ def handle_vector_send(params: dict) -> ():
     return received_str, decoded_str
 
 def handle_text_send(params: dict) -> ():
+    """
+    Gets encoded text to send, generating matrix and error probability.
+    Returns text that was sent without encoding and text which was send with encoding.
+    """
+
     textValue, gen_matrix_str, error_chance_str = _assure_params(
         params, ["text", "gen_matrix", "error_chance"]
         )
@@ -72,6 +93,7 @@ def handle_text_send(params: dict) -> ():
 
 
 def _assure_params(params: dict, names: list) -> ():
+    """Function that extracts parameters by their 'names' from request. Fails if does not find the parameters."""
     values = []
     for key in names:
         param = params.get(key)
