@@ -1,4 +1,1 @@
 *.pyc
-dist/
-build/
-coding_theory_task.egg-info/
