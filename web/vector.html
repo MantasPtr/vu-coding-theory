@@ -18,21 +18,21 @@
 <!-- Top section -->
 <div class="row">
   <div class="col-md">
-    {{ input_with_placeholder( 'Vector:', 'vector', '101010') }}
-    {{ input_with_placeholder( 'Error probability:', 'error', '0.5') }}
+    {{ input_with_placeholder( 'Vector:', 'vector', 'e.g. 101010') }}
+    {{ input_with_placeholder( 'Error probability:', 'error', 'e.g. 0.5') }}
     </div>
   <div class="col-md">
     <div class="row">
       <div class="col-md">
-        {{ input_with_placeholder( 'K:', 'k', '3') }}
+        {{ input_with_placeholder( 'K:', 'k', 'e.g. 3') }}
       </div>
       <div class="col-md">
-        {{ input_with_placeholder( 'N:', 'n', '7') }}
+        {{ input_with_placeholder( 'N:', 'n', 'e.g. 7') }}
       </div>
     </div>
     <div class="row">
         <div class="col-md">
-      {{ input_with_button('Matrix:', 'matrix', '', 'Generate', 'onGenerateClick()' ) }}  
+      {{ input_with_button('Gen. Matrix:', 'matrix', '', 'Generate', 'onGenerateClick()' ) }}  
     </div>  
     </div>
   </div>
@@ -47,7 +47,7 @@
   <div class="col-md">
 
     Encoded:
-    <span id="encoded-vector">Vector</span>
+    <span id="encoded-vector">_</span>
   </div>
   <div class="col-md">
     {{ input_with_placeholder( 'Error vector:', 'error-vector', '') }}
@@ -63,11 +63,11 @@
 <div class="row">
   <div class="col-md">
     Received:
-    <span id="received-vector">Vector</span>
+    <span id="received-vector">_</span>
   </div>
   <div class="col-md">
     Decoded:
-    <span id="decoded-vector">Vector</span>
+    <span id="decoded-vector">_</span>
   </div>
 </div>
 
