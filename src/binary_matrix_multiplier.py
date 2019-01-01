@@ -1,7 +1,7 @@
 from src.exceptions import InvalidArgumentError
 
 def multiplyByMatrix(vector: [int], matrix:[[int]]):
-    # vector x matrix
+    """ Multiplies vector by matrix """
     _validate(matrix, vector)
     if len(vector) != len (matrix):
         raise InvalidArgumentError(f"cannot multiply vector which length is {len(vector)} by matrix that has a {len(matrix)} rows")
@@ -12,8 +12,8 @@ def multiplyByMatrix(vector: [int], matrix:[[int]]):
     return result
 
 def multiplyByVector(matrix:[[int]], vector: [int]):
-     # matrix x vector
-     # assuming vector and result are tramsposed
+    """ Multiplies matrix by vector """
+     # assuming vector and result are transposed
     _validate(matrix, vector)
     if len(matrix[0]) != len(vector):
          raise InvalidArgumentError(f"cannot multiply vector which length is {len(vector)} by matrix that has a {len(matrix[0])} columns")
@@ -24,7 +24,7 @@ def multiplyByVector(matrix:[[int]], vector: [int]):
     return result
 
 def _validate(matrix:[[int]], vector: [int]):
-    # vector x matrix
+    """Validates that matrix and vector are valid inputs"""
     if not vector:
         raise InvalidArgumentError("vector must me not empty list")
     if not matrix:

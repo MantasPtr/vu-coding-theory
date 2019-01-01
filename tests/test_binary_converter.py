@@ -1,5 +1,6 @@
 import unittest
 from src import binary_converter
+
 class TestBinaryConverter(unittest.TestCase):
 
     def test_encode_decode_abc(self):

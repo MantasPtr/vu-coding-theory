@@ -3,18 +3,27 @@ from src.binary_matrix_multiplier import multiplyByVector
 from operator import itemgetter
 
 def generate_syndromes_coset_leaders_weights(parity_matrix:[[int]]) -> [([int],[int])]:
+    # there will be 2 ^(n-k) syndromes
     syndrome_count = pow(2, len(parity_matrix))
+    # here will store syndrome and weight of coset leaders
     syndromes_leaders_weights = []
+    # coset leader length = n
     coset_leader_len = len(parity_matrix[0])
+    # generator - each time return different coset leader
     leader_generator = _init_coset_leader_generator(coset_leader_len)
+    # while not all syndomes were found
     while len(syndromes_leaders_weights) < syndrome_count:
+        # get next coset leader and its weight
         leader, count_of_1 = next(leader_generator)
+        # get syndrome - multiply parity_matrix by coset leader
         syndrome = multiplyByVector(parity_matrix, leader)
+        # if syndrome kla
         if syndrome not in map((lambda s: s[0]), syndromes_leaders_weights):
             syndromes_leaders_weights.append((syndrome, count_of_1))
     return syndromes_leaders_weights
 
 def _init_coset_leader_generator (length: int) -> ([int],int):
+    """ generates coset leaders by increasing number of 1 and trying all possible combinations of 1 and 0""" 
     # all possible places of 1 in the vector
     positions = range(length)
     

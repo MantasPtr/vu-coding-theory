@@ -3,6 +3,7 @@ import argparse
 from src.exceptions import InvalidArgumentError
 import src.matrix_generator as matrix_generator
 import src.parser as parser
+from src import validator
 
 def parse_program_args():
     args = _read_args()
@@ -20,10 +21,11 @@ def parse_args(args):
     return k, n, msg, gen_matrix, error_chance
 
 def _resolve_matrix(gen_matrix, k, n):
+    """Parses 'gen_matrix' into matrix. Generates generating matrix if not provided"""
     if (gen_matrix is None):
         gen_matrix = matrix_generator.generate(k,n)
     else:
-        gen_matrix = parser.matrix_to_list(gen_matrix)
+        gen_matrix = validator.validate_gen_matrix(gen_matrix)
         if (len(gen_matrix) != k):
             raise InvalidArgumentError(f"Generating matrix dimension does not match k argument. k = {k}, matrix row count = {len(gen_matrix)}") 
         if (len(gen_matrix[0]) != n):
