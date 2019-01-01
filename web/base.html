@@ -20,9 +20,6 @@
     <header>
       <h3>{% block header %}{% endblock %}</h3>
     </header>
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
-    {% block content %}{% endblock %}
+    {% block content %}<h2>Step by step decoding<h2><h4>Use blue links above to go to the demos</h4>{% endblock %}
   </section>
 </body>
