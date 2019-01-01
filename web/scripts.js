@@ -54,6 +54,7 @@ async function onGenerate(){
         }
         json = await doPost("/vector/gen-matrix/", body)
         if (json) {
+            hideError()
             matrixInput.value = json.matrix
         }
 }
@@ -72,6 +73,7 @@ async function onEncode(){
     }
     json = await doPost("/vector/encode/", body)
     if (json) {
+        hideError()
         encodedVectorSpan.textContent = json.encoded
         encodedVectorSpan.value = json.encoded
         errorVectorInput.value = json.error_vector
@@ -93,6 +95,7 @@ async function onSend(){
     }
     json = await doPost("/vector/send/", body)
     if (json) {
+        hideError()
         receivedVectorSpan.textContent = json.received
         decodedVectorSpan.textContent = json.decoded
     }
@@ -131,7 +134,7 @@ function handleException(exception){
     }
 } 
 
-function hideError(message){
+function hideError(){
     errorBanner.classList.add("invisible")
 }
 

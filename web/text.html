@@ -4,7 +4,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='text-scripts.js') }}"></script>
 {% endblock %}
 {% block header %}
-<h1>{% block title %}Text encoding{% endblock %}</h1>
+{% block title %}Text encoding{% endblock %}
 {% endblock %}
 
 {% block content %}
@@ -47,11 +47,11 @@
 <div class="row">
   <div class="col-md">
     <h4>Transmitted without error correction:</h4>
-    <span id="received-without">Vector</span>
+    <span id="received-without">_</span>
   </div>
   <div class="col-md">
     <h4>Transmitted with error correction:</h4>
-    <span id="received-with">Vector</span>
+    <span id="received-with">_</span>
   </div>
 </div>
 

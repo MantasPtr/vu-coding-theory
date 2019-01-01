@@ -50,6 +50,7 @@ async function onGenerate(){
         }
         json = await doPost("/common/gen-matrix/", body)
         if (json) {
+            hideError()
             matrixInput.value = json.matrix
         }
 }
@@ -66,6 +67,7 @@ async function onSend(){
     }
     json = await doPost("/text/send/", body)
     if (json) {
+        hideError()
         withoutEncodingSpan.textContent = json.not_encoded
         withEncodingSpan.textContent = json.encoded
     }

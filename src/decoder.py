@@ -58,7 +58,7 @@ class Decoder:
             return self._search_for_decode_vector(idx + 1, vector, lowest_weight)
 
     def _calculate_coset_leader_weight(self, vector):
-        """ decodes vector and finds its coset leader weight """
+        """ decodes vector and finds its coset leader weight """ 
         decoded = multiplyByVector(self.parity_check_matrix, vector)
         
         weight = self._find_coset_leader_weight_by_syndrome(decoded)
